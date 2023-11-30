@@ -37,7 +37,7 @@ public:
 	void sendMoney(std::string_view senderID, int money);
 	void updateHistory(Transaction* transaction);
 	void showHistory();
-	void showAccountInfo();
+	void showFullInfo();
 };
 
 Account::Account() :
@@ -86,7 +86,7 @@ Account::updateHistory(Transaction* transaction) {
 }
 
 void
-Account::showAccountInfo() {
+Account::showFullInfo() {
 	std::cout << "BALANCE: " << this->balance   << '\n';
 	std::cout << "ID:      " << this->accountID << '\n';
 	showHistory();
@@ -127,8 +127,10 @@ main() {
 	std::fstream in{ "input.txt" };
 	std::string  str{};
 
-	while (in >> str) {
+	while (std::getline(in, str)) {
 		Transaction* transaction{ getTransaction(str) };
+		account->updateHistory(transaction);
 	}
+	account->showFullInfo();
 	return 0;
 }
